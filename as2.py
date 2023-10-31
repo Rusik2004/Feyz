@@ -1,12 +1,16 @@
-file_name = "mbox.txt"  
-email_hosts = {}
+file_name = "romeo.txt"
+word_list = []
+try:
+    with open(file_name, "r") as file:
+        for line in file:
+            words = line.split()
+            for word in words:
+                if word not in word_list:
+                    word_list.append(word)
+    word_list.sort()
+    print(word_list)
 
-with open(file_name, 'r') as file:
-    for line in file:
-        if line.startswith("From:"):
-            email = line.split()[1]
-            host = email.split('@')[1]
-            email_hosts[host] = email_hosts.get(host, 0) + 1
-for host in email_hosts:
-        print(host)
-print(f"Total {len(email_hosts)} hosts printed")
+except FileNotFoundError:
+    print(f"File '{file_name}' not found.")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")

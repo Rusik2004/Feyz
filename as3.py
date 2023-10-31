@@ -1,23 +1,21 @@
+sender_list = []
+file_name = "mbox.txt"
+line_count = 0
 try:
-    file_name = input("Enter a file name: ")
-    total_confidence = 0
-    count = 0
-    with open(file_name, 'r') as file:
+    with open(file_name, "r") as file:
         for line in file:
-            if line.startswith("X-DSPAM-Confidence:"):
-                try:
-                    confidence = float(line.split(":")[1])
-                    total_confidence += confidence
-                    count += 1
-                except ValueError:
-                    continue
-
-    if count > 0:
-        average_confidence = total_confidence / count
-        print(f"Average spam confidence: {average_confidence:.14f}")
-    else:
-        print("No X-DSPAM-Confidence lines found in the file.")
-
+            line = line.strip()
+            if line.startswith("From "):
+                words = line.split()
+                if len(words) > 1:
+                    sender = words[1]
+                    sender_list.append(sender)
+    for sender in sender_list:
+        print(sender)
+    line_count = len(sender_list)
+    print(f"Total {line_count} lines were printed")
 except FileNotFoundError:
-    print(f"File cannot be opened: {file_name}")
+    print(f"File '{file_name}' not found.")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
 
